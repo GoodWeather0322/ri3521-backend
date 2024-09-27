@@ -16,7 +16,7 @@ class User(UserBase):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):
@@ -43,7 +43,7 @@ class News(NewsBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class KnowledgeDocumentBase(BaseModel):
@@ -60,4 +60,4 @@ class KnowledgeDocument(KnowledgeDocumentBase):
     uploaded_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

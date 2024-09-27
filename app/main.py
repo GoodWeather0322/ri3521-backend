@@ -1,7 +1,8 @@
 # app/main.py
 from fastapi import FastAPI
+
+from app import models
 from app.api import api
-from app.db import models
 from app.db.session import engine
 from fastapi.staticfiles import StaticFiles
 

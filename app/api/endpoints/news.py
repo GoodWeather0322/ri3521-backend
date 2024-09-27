@@ -2,6 +2,7 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.orm import Session
 
+from app import models
 from app.schemas import schemas
 from app.crud import crud_news
 from app.api import deps
