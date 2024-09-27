@@ -18,4 +18,4 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 # 應用啟動時創建 admin user
-create_admin_user(app)
+create_admin_user()

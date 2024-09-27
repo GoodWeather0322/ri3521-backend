@@ -9,10 +9,10 @@ from app.api import deps
 router = APIRouter()
 
 
-@router.post("/", response_model=schemas.User)
-def create_user(user_in: schemas.UserCreate, db: Session = Depends(deps.get_db)):
-    user = crud_user.get_user_by_username(db, username=user_in.username)
+@router.get("/verify", response_model=schemas.UserBase)
+def verify_user(username: str, db: Session = Depends(deps.get_db)):
+    user = crud_user.get_user_by_username(db, username)
     if user:
-        raise HTTPException(status_code=400, detail="使用者名稱已被註冊")
-    user = crud_user.create_user(db, user=user_in)
-    return user
+        return schemas.UserBase(username=username)
+    else:
+        raise HTTPException(status_code=404, detail="使用者不存在")

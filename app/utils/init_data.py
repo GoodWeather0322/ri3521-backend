@@ -1,17 +1,19 @@
 # app/utils/init_data.py
-from fastapi.testclient import TestClient
-from fastapi import FastAPI
+from sqlalchemy.orm import Session
+from app.db.session import SessionLocal
+from app.crud import crud_user
+from app.schemas import schemas
 
 
-def create_admin_user(app: FastAPI):
-    client = TestClient(app)
-    response = client.post("/users/", json={"username": "admin", "password": "admin"})
-    if (
-        response.status_code == 400
-        and response.json().get("detail") == "使用者名稱已被註冊"
-    ):
-        print("Admin user already exists.")
-    elif response.status_code == 200:
-        print("Admin user created successfully.")
-    else:
-        print("Failed to create admin user:", response.json())
+def create_admin_user():
+    db: Session = SessionLocal()
+    try:
+        admin_user = crud_user.get_user_by_username(db, username="admin")
+        if not admin_user:
+            admin_user_in = schemas.UserCreate(username="admin", password="admin")
+            crud_user.create_user(db, user=admin_user_in)
+            print("Admin user created successfully.")
+        else:
+            print("Admin user already exists.")
+    finally:
+        db.close()
