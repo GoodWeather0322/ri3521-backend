@@ -30,3 +30,19 @@ async def upload_document(
 def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)):
     documents = crud_document.get_documents(db, skip=skip, limit=limit)
     return documents
+
+
+@router.delete("/{document_id}", response_model=schemas.KnowledgeDocument)
+def delete_document(
+    document_id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
+):
+    document = crud_document.__get_document_by_id(db, document_id=document_id)
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    if document.user_id != current_user.id:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to delete this document"
+        )
+    return crud_document.delete_document(db, document_id=document_id)

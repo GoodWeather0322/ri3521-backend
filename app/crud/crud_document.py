@@ -13,3 +13,19 @@ def create_document(db: Session, file_path: str, user_id: int):
 
 def get_documents(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.KnowledgeDocument).offset(skip).limit(limit).all()
+
+
+def delete_document(db: Session, document_id: int):
+    document = __get_document_by_id(db, document_id)
+    if document:
+        db.delete(document)
+        db.commit()
+    return document
+
+
+def __get_document_by_id(db: Session, document_id: int):
+    return (
+        db.query(models.KnowledgeDocument)
+        .filter(models.KnowledgeDocument.id == document_id)
+        .first()
+    )
