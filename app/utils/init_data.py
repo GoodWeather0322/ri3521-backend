@@ -4,6 +4,7 @@ from app.db.session import SessionLocal
 from app.crud import crud_user
 from app.schemas import schemas
 from app.core.logging_config import logging
+
 logger = logging.getLogger(__name__)
 
 

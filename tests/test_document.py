@@ -8,7 +8,7 @@ def test_upload_document(test_client, test_user_token):
         response = test_client.post(
             "/documents/",
             files={"file": ("test_document.txt", f, "text/plain")},
-            headers={"Authorization": f"Bearer {test_user_token}"}
+            headers={"Authorization": f"Bearer {test_user_token}"},
         )
     assert response.status_code == 200
     assert response.json()["file_path"] == "app/static/documents/test_document.txt"
