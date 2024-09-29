@@ -1,6 +1,6 @@
 import logging
 
-LOGGING_LEVEL = logging.INFO
+LOGGING_LEVEL = logging.DEBUG
 
 logging.basicConfig(
     level=LOGGING_LEVEL,
