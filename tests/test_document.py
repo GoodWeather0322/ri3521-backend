@@ -1,6 +1,6 @@
 def test_upload_document(test_client, test_user_token):
     # 模擬文件上傳
-    file_path = "tests/test_document.txt"
+    file_path = "tests/assets/test_document.txt"
     with open(file_path, "w") as f:
         f.write("This is a test document.")
 
