@@ -10,7 +10,7 @@ from app.utils.init_data import create_admin_user
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="My FastAPI App")
+app = FastAPI(title="ri3521-backend")
 
 app.include_router(api.api_router)
 
