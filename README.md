@@ -13,7 +13,10 @@
   - 使用 sqlite-web 來可視化 SQLite 數據庫
 
 ## 如何啟動
-1. 安裝相關套件
+1. 環境要求
+    - Python 3.12
+    - poetry (optional)
+2. 安裝相關套件
     ### 使用 Poetry 安裝
     ```bash
     poetry install
@@ -24,12 +27,12 @@
     pip install -r requirements.txt
     ```
 
-2. 啟動 FastAPI 應用
+3. 啟動 FastAPI 應用
     ```bash
     uvicorn app.main:app --port 8000 --reload
     ```
 
-3. 訪問 API 文檔
+4. 訪問 API 文檔
     在瀏覽器中打開 `http://localhost:8000/docs` 來查看和測試 API 端點。
 
 ## 如何可視化 SQLite
