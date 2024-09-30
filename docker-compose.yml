@@ -8,6 +8,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: mysql+pymysql://user:password@db:3306/sql_app
     depends_on:
       db:
         condition: service_healthy
