@@ -17,11 +17,10 @@ async def upload_document(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
 ):
-    file_filename = file.filename
-    file_path = f"app/static/president_announcements/{file_filename}"
-    utils.save_upload_file(file, file_path)
+    file_path = "app/static/president_announcements"
+    saved_path = utils.save_upload_file(file, file_path)
     document = crud_president_announcement.create_document(
-        db=db, file_path=file_path, user_id=current_user.id
+        db=db, file_path=saved_path, user_id=current_user.id
     )
     return document
 

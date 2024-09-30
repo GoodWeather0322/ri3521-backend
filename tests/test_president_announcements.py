@@ -11,10 +11,9 @@ def test_upload_president_announcement(test_client, test_user_token):
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
     assert response.status_code == 200
-    assert (
-        response.json()["file_path"]
-        == "app/static/president_announcements/test_president_announcement.txt"
-    )
+    file_path_response = response.json()["file_path"]
+    assert file_path_response.startswith("app/static/president_announcements")
+    assert "test_president_announcement.txt" in file_path_response
 
 
 def test_delete_president_announcement(test_client, test_user_token):

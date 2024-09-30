@@ -11,10 +11,9 @@ def test_upload_director_message(test_client, test_user_token):
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
     assert response.status_code == 200
-    assert (
-        response.json()["file_path"]
-        == "app/static/director_messages/test_director_message.txt"
-    )
+    file_path_response = response.json()["file_path"]
+    assert file_path_response.startswith("app/static/director_messages")
+    assert "test_director_message.txt" in file_path_response
 
 
 def test_delete_director_message(test_client, test_user_token):

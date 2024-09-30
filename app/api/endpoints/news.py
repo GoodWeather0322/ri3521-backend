@@ -19,12 +19,11 @@ async def create_news(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
 ):
-    image_filename = image.filename
-    image_path = f"app/static/images/{image_filename}"
-    utils.save_upload_file(image, image_path)
+    image_path = "app/static/images"
+    saved_path = utils.save_upload_file(image, image_path)
     news_in = schemas.NewsCreate(title=title, content=content)
     news_item = crud_news.create_news(
-        db=db, news=news_in, image_path=image_path, user_id=current_user.id
+        db=db, news=news_in, image_path=saved_path, user_id=current_user.id
     )
     return news_item
 
@@ -61,17 +60,16 @@ async def update_news(
         )
 
     # 更新图像文件
-    image_path = None
+    saved_path = None
     if image:
-        image_filename = image.filename
-        image_path = f"app/static/images/{image_filename}"
-        utils.save_upload_file(image, image_path)
+        image_path = "app/static/images"
+        saved_path = utils.save_upload_file(image, image_path)
 
     # 更新新闻
     news_in = schemas.NewsUpdate(title=title, content=content)
 
     return crud_news.update_news(
-        db=db, news_id=news_id, news=news_in, image_path=image_path
+        db=db, news_id=news_id, news=news_in, image_path=saved_path
     )
 
 
