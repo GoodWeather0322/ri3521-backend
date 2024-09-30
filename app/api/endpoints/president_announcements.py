@@ -26,6 +26,12 @@ async def upload_document(
     return document
 
 
+@router.get("/all", response_model=list[schemas.PresidentAnnouncement])
+def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)):
+    documents = crud_president_announcement.get_documents(db, skip=skip, limit=limit)
+    return documents
+
+
 @router.get("/{document_id}", response_model=schemas.PresidentAnnouncement)
 def read_document(document_id: int, db: Session = Depends(deps.get_db)):
     document = crud_president_announcement.get_document_by_id(
@@ -34,12 +40,6 @@ def read_document(document_id: int, db: Session = Depends(deps.get_db)):
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
     return document
-
-
-@router.get("/all", response_model=list[schemas.PresidentAnnouncement])
-def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)):
-    documents = crud_president_announcement.get_documents(db, skip=skip, limit=limit)
-    return documents
 
 
 @router.delete("/{document_id}", response_model=schemas.PresidentAnnouncement)

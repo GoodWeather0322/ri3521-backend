@@ -26,18 +26,18 @@ async def upload_document(
     return document
 
 
+@router.get("/all", response_model=list[schemas.DirectorMessage])
+def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)):
+    documents = crud_director_message.get_documents(db, skip=skip, limit=limit)
+    return documents
+
+
 @router.get("/{document_id}", response_model=schemas.DirectorMessage)
 def read_document(document_id: int, db: Session = Depends(deps.get_db)):
     document = crud_director_message.get_document_by_id(db, document_id=document_id)
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
     return document
-
-
-@router.get("/all", response_model=list[schemas.DirectorMessage])
-def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)):
-    documents = crud_director_message.get_documents(db, skip=skip, limit=limit)
-    return documents
 
 
 @router.delete("/{document_id}", response_model=schemas.DirectorMessage)
