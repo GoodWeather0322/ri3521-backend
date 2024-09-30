@@ -14,14 +14,13 @@
 
 ## 如何啟動
 1. 安裝相關套件
-    ### 使用 Poetry 直接安裝
+    ### 使用 Poetry 安裝
     ```bash
     poetry install
     ```
 
-    ### 轉換成 requirements.txt 進行 pip 安裝
+    ### 使用 pip 安裝
     ```bash
-    poetry export -f requirements.txt --output requirements.txt --with dev
     pip install -r requirements.txt
     ```
 
