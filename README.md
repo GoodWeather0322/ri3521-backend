@@ -9,8 +9,8 @@
   - 最新消息
   - 社長文告
   - 總監的話
-- 數據庫可視化
-  - 使用 sqlite-web 來可視化 SQLite 數據庫
+- 資料庫可視化
+  - 使用 sqlite-web 來可視化 SQLite 資料庫
 
 ## 如何啟動
 1. 環境要求
@@ -42,7 +42,7 @@
     ```
 
 2. 訪問 sqlite-web
-    在瀏覽器中打開 `http://localhost:8080` 來查看和管理 SQLite 數據庫。
+    在瀏覽器中打開 `http://localhost:8080` 來查看和管理 SQLite 資料庫。
 
 ## 如何運行單元測試
 1. 測試檔案目錄
