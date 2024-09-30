@@ -28,7 +28,7 @@ async def upload_document(
 
 @router.get("/{document_id}", response_model=schemas.PresidentAnnouncement)
 def read_document(document_id: int, db: Session = Depends(deps.get_db)):
-    document = crud_president_announcement._get_document_by_id(
+    document = crud_president_announcement.get_document_by_id(
         db, document_id=document_id
     )
     if not document:
@@ -48,7 +48,7 @@ def delete_document(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
 ):
-    document = crud_president_announcement._get_document_by_id(
+    document = crud_president_announcement.get_document_by_id(
         db, document_id=document_id
     )
     if not document:

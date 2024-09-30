@@ -16,11 +16,11 @@ class CRUDBaseDocument:
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def delete_document(self, db: Session, document_id: int):
-        document = self._get_document_by_id(db, document_id)
+        document = self.get_document_by_id(db, document_id)
         if document:
             db.delete(document)
             db.commit()
         return document
 
-    def _get_document_by_id(self, db: Session, document_id: int):
+    def get_document_by_id(self, db: Session, document_id: int):
         return db.query(self.model).filter(self.model.id == document_id).first()
