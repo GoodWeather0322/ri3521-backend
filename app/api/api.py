@@ -6,6 +6,7 @@ from app.api.endpoints import (
     president_announcements,
     users,
     login,
+    health,
 )
 
 api_router = APIRouter()
@@ -20,3 +21,5 @@ api_router.include_router(
     prefix="/president_announcements",
     tags=["president_announcements"],
 )
+
+api_router.include_router(health.router, tags=["healthcheck"])
