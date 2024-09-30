@@ -6,6 +6,7 @@ from .schemas import (
     TokenData,
     NewsBase,
     NewsCreate,
+    NewsUpdate,
     News,
     BaseDocument,
     DirectorMessage,
