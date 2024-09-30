@@ -7,7 +7,7 @@ from .schemas import (
     NewsBase,
     NewsCreate,
     News,
-    KnowledgeDocumentBase,
-    KnowledgeDocumentCreate,
-    KnowledgeDocument,
+    BaseDocument,
+    DirectorMessage,
+    PresidentAnnouncement,
 )

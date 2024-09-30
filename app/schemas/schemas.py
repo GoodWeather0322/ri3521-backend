@@ -46,18 +46,18 @@ class News(NewsBase):
         from_attributes = True
 
 
-class KnowledgeDocumentBase(BaseModel):
-    pass
-
-
-class KnowledgeDocumentCreate(KnowledgeDocumentBase):
-    pass
-
-
-class KnowledgeDocument(KnowledgeDocumentBase):
+class BaseDocument(BaseModel):
     id: int
     file_path: str
     uploaded_at: datetime
 
     class Config:
         from_attributes = True
+
+
+class DirectorMessage(BaseDocument):
+    pass
+
+
+class PresidentAnnouncement(BaseDocument):
+    pass
