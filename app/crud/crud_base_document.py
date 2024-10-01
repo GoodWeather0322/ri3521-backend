@@ -18,6 +18,14 @@ class CRUDBaseDocument:
     def get_document_by_id(self, db: Session, document_id: int):
         return db.query(self.model).filter(self.model.id == document_id).first()
 
+    def update_document(self, db: Session, document_id: int, new_file_path: str):
+        document = self.get_document_by_id(db, document_id)
+        if document:
+            document.file_path = new_file_path
+            db.commit()
+            db.refresh(document)
+        return document
+
     def delete_document(self, db: Session, document_id: int):
         document = self.get_document_by_id(db, document_id)
         if document:

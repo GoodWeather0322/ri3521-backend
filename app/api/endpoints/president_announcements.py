@@ -41,6 +41,31 @@ def read_document(document_id: int, db: Session = Depends(deps.get_db)):
     return document
 
 
+@router.put("/{document_id}", response_model=schemas.PresidentAnnouncement)
+async def update_document(
+    document_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
+):
+    document = crud_president_announcement.get_document_by_id(
+        db, document_id=document_id
+    )
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    if document.user_id != current_user.id:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to update this document"
+        )
+
+    file_path = "app/static/president_announcements"
+    saved_path = utils.save_upload_file(file, file_path)
+    updated_document = crud_president_announcement.update_document(
+        db=db, document_id=document_id, new_file_path=saved_path
+    )
+    return updated_document
+
+
 @router.delete("/{document_id}", response_model=schemas.PresidentAnnouncement)
 def delete_document(
     document_id: int,
