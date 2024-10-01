@@ -17,7 +17,7 @@ def test_read_news(test_client):
 
 
 def test_read_news_by_id(test_client, test_user_token):
-    # 首先創建一個新聞
+    # 創建一個最新消息
     create_response = test_client.post(
         "/news/",
         data={"title": "Test News", "content": "This is a test news content."},
@@ -27,7 +27,7 @@ def test_read_news_by_id(test_client, test_user_token):
     assert create_response.status_code == 200
     news_id = create_response.json()["id"]
 
-    # 讀取該新聞
+    # 讀取最新消息
     response = test_client.get(
         f"/news/{news_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
@@ -41,7 +41,7 @@ def test_read_news_by_id(test_client, test_user_token):
 
 
 def test_update_news(test_client, test_user_token):
-    # 首先創建一個新聞
+    # 創建一個最新消息
     create_response = test_client.post(
         "/news/",
         data={"title": "Test News", "content": "This is a test news content."},
@@ -50,7 +50,7 @@ def test_update_news(test_client, test_user_token):
     )
     news_id = create_response.json()["id"]
 
-    # 更新該新聞
+    # 更新最新消息
     response = test_client.put(
         f"/news/{news_id}",
         data={
@@ -72,7 +72,7 @@ def test_update_news(test_client, test_user_token):
 
 
 def test_delete_news(test_client, test_user_token):
-    # 首先創建一個新聞
+    # 創建一個最新消息
     create_response = test_client.post(
         "/news/",
         data={"title": "Test News", "content": "This is a test news content."},
@@ -81,13 +81,13 @@ def test_delete_news(test_client, test_user_token):
     )
     news_id = create_response.json()["id"]
 
-    # 刪除該新聞
+    # 刪除最新消息
     response = test_client.delete(
         f"/news/{news_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert response.status_code == 200
 
-    # 確認該新聞已被刪除
+    # 確認最新消息已被刪除
     get_response = test_client.get(f"/news/{news_id}")
     assert get_response.status_code == 404

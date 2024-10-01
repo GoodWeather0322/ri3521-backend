@@ -39,7 +39,7 @@ def read_news_by_id(news_id: int, db: Session = Depends(deps.get_db)):
     news_item = crud_news.get_news_by_id(db, news_id=news_id)
     if not news_item:
         raise HTTPException(status_code=404, detail="News not found")
-    # 讀取圖片文件
+    # 讀取圖片檔案
     file_path = news_item.image_path
     with open(file_path, "rb") as file:
         file_content = file.read()
@@ -58,7 +58,7 @@ async def update_news(
     news_id: int,
     title: str = Form(...),
     content: str = Form(...),
-    image: UploadFile = File(None),  # 允许图像文件为空
+    image: UploadFile = File(None),  # 允許圖片為空
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
 ):
@@ -70,13 +70,13 @@ async def update_news(
             status_code=403, detail="Not authorized to update this news"
         )
 
-    # 更新图像文件
+    # 更新圖片
     saved_path = None
     if image:
         image_path = "app/static/images"
         saved_path = utils.save_upload_file(image, image_path)
 
-    # 更新新闻
+    # 更新新聞
     news_in = schemas.NewsUpdate(title=title, content=content)
 
     return crud_news.update_news(

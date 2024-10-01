@@ -1,5 +1,5 @@
 def test_upload_director_message(test_client, test_user_token):
-    # 模擬文件上傳
+    # 模擬檔案上傳
     file_path = "tests/assets/test_director_message.txt"
     with open(file_path, "w") as f:
         f.write("This is a test director message.")
@@ -17,7 +17,7 @@ def test_upload_director_message(test_client, test_user_token):
 
 
 def test_read_director_message_by_id(test_client, test_user_token):
-    # 模擬文件上傳
+    # 模擬檔案上傳
     file_path = "tests/assets/test_director_message.txt"
     file_content = "This is a test director message."
     with open(file_path, "w") as f:
@@ -32,7 +32,7 @@ def test_read_director_message_by_id(test_client, test_user_token):
     assert upload_response.status_code == 200
     document_id = upload_response.json()["id"]
 
-    # 讀取文件
+    # 讀取檔案
     response = test_client.get(
         f"/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
@@ -45,7 +45,7 @@ def test_read_director_message_by_id(test_client, test_user_token):
 
 
 def test_update_director_message(test_client, test_user_token):
-    # 模擬文件上傳
+    # 模擬檔案上傳
     file_path = "tests/assets/test_director_message.txt"
     with open(file_path, "w") as f:
         f.write("This is a test director message.")
@@ -59,7 +59,7 @@ def test_update_director_message(test_client, test_user_token):
     assert upload_response.status_code == 200
     document_id = upload_response.json()["id"]
 
-    # 更新文件
+    # 更新檔案
     new_file_path = "tests/assets/updated_test_director_message.txt"
     with open(new_file_path, "w") as f:
         f.write("This is an updated test director message.")
@@ -77,7 +77,7 @@ def test_update_director_message(test_client, test_user_token):
 
 
 def test_delete_director_message(test_client, test_user_token):
-    # 模擬文件上傳
+    # 模擬檔案上傳
     file_path = "tests/assets/test_director_message_to_delete.txt"
     with open(file_path, "w") as f:
         f.write("This document will be deleted.")
@@ -91,14 +91,14 @@ def test_delete_director_message(test_client, test_user_token):
     assert upload_response.status_code == 200
     document_id = upload_response.json()["id"]
 
-    # 刪除文件
+    # 刪除檔案
     delete_response = test_client.delete(
         f"/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert delete_response.status_code == 200
 
-    # 確認文件已被刪除
+    # 確認檔案已被刪除
     get_response = test_client.get(
         f"/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
