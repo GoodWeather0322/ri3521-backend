@@ -6,6 +6,10 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     PROJECT_NAME: str = "My FastAPI App"
     DATABASE_URL: str
+    MYSQL_ROOT_PASSWORD: str
+    MYSQL_DATABASE: str
+    MYSQL_USER: str
+    MYSQL_PASSWORD: str
     SECRET_KEY: str = secrets.token_urlsafe(32)
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
