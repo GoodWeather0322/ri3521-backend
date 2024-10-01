@@ -59,6 +59,10 @@ class BaseDocument(BaseModel):
         from_attributes = True
 
 
+class DocumentWithFile(BaseDocument):
+    file: bytes
+
+
 class DirectorMessage(BaseDocument):
     pass
 

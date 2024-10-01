@@ -16,6 +16,34 @@ def test_upload_director_message(test_client, test_user_token):
     assert "test_director_message.txt" in file_path_response
 
 
+def test_read_director_message_by_id(test_client, test_user_token):
+    # 模擬文件上傳
+    file_path = "tests/assets/test_director_message.txt"
+    file_content = "This is a test director message."
+    with open(file_path, "w") as f:
+        f.write(file_content)
+
+    with open(file_path, "rb") as f:
+        upload_response = test_client.post(
+            "/director_messages/",
+            files={"file": ("test_director_message.txt", f, "text/plain")},
+            headers={"Authorization": f"Bearer {test_user_token}"},
+        )
+    assert upload_response.status_code == 200
+    document_id = upload_response.json()["id"]
+
+    # 讀取文件
+    response = test_client.get(
+        f"/director_messages/{document_id}",
+        headers={"Authorization": f"Bearer {test_user_token}"},
+    )
+    assert response.status_code == 200
+    assert response.json()["id"] == document_id
+    assert response.json()["file_path"].startswith("app/static/director_messages")
+    assert "test_director_message.txt" in response.json()["file_path"]
+    assert response.json()["file"] == file_content
+
+
 def test_update_director_message(test_client, test_user_token):
     # 模擬文件上傳
     file_path = "tests/assets/test_director_message.txt"

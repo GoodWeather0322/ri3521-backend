@@ -31,12 +31,21 @@ def read_documents(skip: int = 0, limit: int = 10, db: Session = Depends(deps.ge
     return documents
 
 
-@router.get("/{document_id}", response_model=schemas.DirectorMessage)
+@router.get("/{document_id}", response_model=schemas.DocumentWithFile)
 def read_document(document_id: int, db: Session = Depends(deps.get_db)):
     document = crud_director_message.get_document_by_id(db, document_id=document_id)
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
-    return document
+    file_path = document.file_path
+    with open(file_path, "rb") as file:
+        file_content = file.read()
+
+    return schemas.DocumentWithFile(
+        id=document.id,
+        file_path=document.file_path,
+        uploaded_at=document.uploaded_at,
+        file=file_content,
+    )
 
 
 @router.put("/{document_id}", response_model=schemas.DirectorMessage)
