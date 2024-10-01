@@ -24,12 +24,20 @@ def test_read_news_by_id(test_client, test_user_token):
         files={"image": ("test_image.jpg", b"fake image data", "image/jpeg")},
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
+    assert create_response.status_code == 200
     news_id = create_response.json()["id"]
 
     # 讀取該新聞
-    response = test_client.get(f"/news/{news_id}")
+    response = test_client.get(
+        f"/news/{news_id}",
+        headers={"Authorization": f"Bearer {test_user_token}"},
+    )
     assert response.status_code == 200
-    assert response.json()["id"] == news_id
+    news_data = response.json()
+    assert news_data["title"] == "Test News"
+    assert news_data["content"] == "This is a test news content."
+    assert "image" in news_data
+    assert news_data["image"] == "fake image data"
 
 
 def test_update_news(test_client, test_user_token):
