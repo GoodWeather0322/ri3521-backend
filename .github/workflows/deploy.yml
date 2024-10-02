@@ -16,6 +16,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_SSH_PORT }}
           script: |
+            whoami
             cd /mnt/disk1/deploy/ri3521-backend
             docker compose down
             git pull
