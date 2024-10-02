@@ -6,7 +6,7 @@ def test_upload_director_message(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         response = test_client.post(
-            "/director_messages/",
+            "/api/director_messages/",
             files={"file": ("test_director_message.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -25,7 +25,7 @@ def test_read_director_message_by_id(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/director_messages/",
+            "/api/director_messages/",
             files={"file": ("test_director_message.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -34,7 +34,7 @@ def test_read_director_message_by_id(test_client, test_user_token):
 
     # 讀取檔案
     response = test_client.get(
-        f"/director_messages/{document_id}",
+        f"/api/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert response.status_code == 200
@@ -52,7 +52,7 @@ def test_update_director_message(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/director_messages/",
+            "/api/director_messages/",
             files={"file": ("test_director_message.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -66,7 +66,7 @@ def test_update_director_message(test_client, test_user_token):
 
     with open(new_file_path, "rb") as f:
         update_response = test_client.put(
-            f"/director_messages/{document_id}",
+            f"/api/director_messages/{document_id}",
             files={"file": ("updated_test_director_message.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -84,7 +84,7 @@ def test_delete_director_message(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/director_messages/",
+            "/api/director_messages/",
             files={"file": ("test_director_message_to_delete.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -93,14 +93,14 @@ def test_delete_director_message(test_client, test_user_token):
 
     # 刪除檔案
     delete_response = test_client.delete(
-        f"/director_messages/{document_id}",
+        f"/api/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert delete_response.status_code == 200
 
     # 確認檔案已被刪除
     get_response = test_client.get(
-        f"/director_messages/{document_id}",
+        f"/api/director_messages/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert get_response.status_code == 404

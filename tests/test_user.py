@@ -1,6 +1,6 @@
 # def test_create_user(test_client):
 #     response = test_client.post(
-#         "/users/",
+#         "/api/users/",
 #         json={"username": "testuser", "password": "testpassword"}
 #     )
 #     assert response.status_code == 200
@@ -9,7 +9,7 @@
 
 def test_login_user(test_client):
     response = test_client.post(
-        "/login/access-token", data={"username": "admin", "password": "admin"}
+        "/api/login/access-token", data={"username": "admin", "password": "admin"}
     )
     assert response.status_code == 200
     assert "access_token" in response.json()
@@ -17,7 +17,7 @@ def test_login_user(test_client):
 
 def test_token_decode(test_client):
     response = test_client.post(
-        "/login/access-token", data={"username": "admin", "password": "admin"}
+        "/api/login/access-token", data={"username": "admin", "password": "admin"}
     )
     assert response.status_code == 200
     assert "access_token" in response.json()

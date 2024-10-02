@@ -6,7 +6,7 @@ def test_upload_president_announcement(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         response = test_client.post(
-            "/president_announcements/",
+            "/api/president_announcements/",
             files={"file": ("test_president_announcement.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -25,7 +25,7 @@ def test_read_president_announcement_by_id(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/president_announcements/",
+            "/api/president_announcements/",
             files={"file": ("test_president_announcement.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -34,7 +34,7 @@ def test_read_president_announcement_by_id(test_client, test_user_token):
 
     # 讀取檔案
     response = test_client.get(
-        f"/president_announcements/{document_id}",
+        f"/api/president_announcements/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert response.status_code == 200
@@ -52,7 +52,7 @@ def test_update_president_announcement(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/president_announcements/",
+            "/api/president_announcements/",
             files={"file": ("test_president_announcement.txt", f, "text/plain")},
             headers={"Authorization": f"Bearer {test_user_token}"},
         )
@@ -66,7 +66,7 @@ def test_update_president_announcement(test_client, test_user_token):
 
     with open(new_file_path, "rb") as f:
         update_response = test_client.put(
-            f"/president_announcements/{document_id}",
+            f"/api/president_announcements/{document_id}",
             files={
                 "file": ("updated_test_president_announcement.txt", f, "text/plain")
             },
@@ -86,7 +86,7 @@ def test_delete_president_announcement(test_client, test_user_token):
 
     with open(file_path, "rb") as f:
         upload_response = test_client.post(
-            "/president_announcements/",
+            "/api/president_announcements/",
             files={
                 "file": ("test_president_announcement_to_delete.txt", f, "text/plain")
             },
@@ -97,14 +97,14 @@ def test_delete_president_announcement(test_client, test_user_token):
 
     # 刪除檔案
     delete_response = test_client.delete(
-        f"/president_announcements/{document_id}",
+        f"/api/president_announcements/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert delete_response.status_code == 200
 
     # 確認檔案已被刪除
     get_response = test_client.get(
-        f"/president_announcements/{document_id}",
+        f"/api/president_announcements/{document_id}",
         headers={"Authorization": f"Bearer {test_user_token}"},
     )
     assert get_response.status_code == 404
