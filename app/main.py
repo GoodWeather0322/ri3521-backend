@@ -12,7 +12,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="ri3521-backend")
 
-app.include_router(api.api_router)
+app.include_router(api.api_router, prefix="/api")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
