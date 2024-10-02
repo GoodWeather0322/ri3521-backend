@@ -12,7 +12,7 @@ from app.core.logging_config import logging
 
 logger = logging.getLogger(__name__)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/access-token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login/access-token")
 
 
 def get_db():
