@@ -1,7 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.db.session import get_db
+from app.api import deps
+
 
 router = APIRouter()
 
@@ -12,10 +15,11 @@ async def healthcheck():
 
 
 @router.get("/health/db", tags=["healthcheck"])
-async def healthcheck_db():
+async def healthcheck_db(
+    db: Session = Depends(deps.get_db),
+):
     try:
-        db = next(get_db())
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         return {"status": "ok"}
     except SQLAlchemyError as e:
         return {"status": "error", "message": str(e)}
