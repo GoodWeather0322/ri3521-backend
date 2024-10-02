@@ -1,4 +1,7 @@
 from fastapi import APIRouter
+from sqlalchemy.exc import SQLAlchemyError
+
+from app.db.session import get_db
 
 router = APIRouter()
 
@@ -11,9 +14,6 @@ async def healthcheck():
 @router.get("/health/db", tags=["healthcheck"])
 async def healthcheck_db():
     try:
-        from app.db.session import get_db
-        from sqlalchemy.exc import SQLAlchemyError
-
         db = next(get_db())
         db.execute("SELECT 1")
         return {"status": "ok"}
