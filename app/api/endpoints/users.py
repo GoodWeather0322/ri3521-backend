@@ -10,9 +10,5 @@ router = APIRouter()
 
 
 @router.get("/verify", response_model=schemas.UserBase)
-def verify_user(username: str, db: Session = Depends(deps.get_db)):
-    user = crud_user.get_user_by_username(db, username)
-    if user:
-        return schemas.UserBase(username=username)
-    else:
-        raise HTTPException(status_code=404, detail="使用者不存在")
+async def verify_token(current_user: models.User = Depends(deps.get_current_user)):
+    return schemas.UserBase(username=current_user.username)

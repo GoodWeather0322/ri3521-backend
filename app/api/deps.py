@@ -1,7 +1,7 @@
 # app/api/deps.py
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+from jose import jwt, JWTError, ExpiredSignatureError
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 from app import models, schemas
@@ -50,9 +50,9 @@ async def get_current_user(
         exp = payload.get("exp")
         if exp is None:
             raise credentials_exception
-        if datetime.now(timezone.utc) > datetime.fromtimestamp(exp, timezone.utc):
-            raise expired_exception
         token_data = schemas.TokenData(username=username)
+    except ExpiredSignatureError:
+        raise expired_exception
     except JWTError:
         raise credentials_exception
     user = get_user(db, username=token_data.username)

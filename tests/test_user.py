@@ -1,12 +1,3 @@
-# def test_create_user(test_client):
-#     response = test_client.post(
-#         "/api/users/",
-#         json={"username": "testuser", "password": "testpassword"}
-#     )
-#     assert response.status_code == 200
-#     assert response.json()["username"] == "testuser"
-
-
 def test_login_user(test_client):
     response = test_client.post(
         "/api/login/access-token", data={"username": "admin", "password": "admin"}
@@ -41,3 +32,29 @@ def test_token_decode(test_client):
     assert exp_datetime < datetime.now() + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     ) + timedelta(minutes=1)
+
+
+def test_verify_valid_token(test_client, test_user_token):
+    response = test_client.get(
+        "/api/users/verify",
+        headers={"Authorization": f"Bearer {test_user_token}"},
+    )
+    assert response.status_code == 200
+    assert response.json()["username"] == "admin"
+
+
+def test_verify_expired_token(test_client):
+    # 創建過期的 token
+    from app.utils.security import create_access_token
+    from datetime import timedelta
+
+    expired_token = create_access_token(
+        data={"sub": "admin"},
+        expires_delta=timedelta(minutes=-2),  # 設置過期時間為1分鐘前
+    )
+    response = test_client.get(
+        "/api/users/verify",
+        headers={"Authorization": f"Bearer {expired_token}"},
+    )
+    assert response.status_code == 401
+    assert response.json()["detail"] == "憑證已過期"
