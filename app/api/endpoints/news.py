@@ -1,5 +1,6 @@
 # app/api/endpoints/news.py
 import io
+import mimetypes
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
@@ -36,8 +37,16 @@ def read_news(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)
     return news_items
 
 
+@router.get("/{news_id}", response_model=schemas.News)
+def get_news_by_id(news_id: int, db: Session = Depends(deps.get_db)):
+    news_item = crud_news.get_news_by_id(db, news_id=news_id)
+    if not news_item:
+        raise HTTPException(status_code=404, detail="News not found")
+    return news_item
+
+
 @router.get("/{news_id}/image", response_class=StreamingResponse)
-def get_news_image(news_id: int, db: Session = Depends(deps.get_db)):
+def get_news_image_by_id(news_id: int, db: Session = Depends(deps.get_db)):
     news_item = crud_news.get_news_by_id(db, news_id=news_id)
     if not news_item:
         raise HTTPException(status_code=404, detail="News not found")
@@ -45,7 +54,13 @@ def get_news_image(news_id: int, db: Session = Depends(deps.get_db)):
     file_path = news_item.image_path
     with open(file_path, "rb") as file:
         file_content = file.read()
-    return StreamingResponse(io.BytesIO(file_content), media_type="image/jpeg")
+
+    # 根據檔名獲取 MIME 類型
+    mime_type, _ = mimetypes.guess_type(file_path)
+    if mime_type is None:
+        mime_type = "application/octet-stream"  # 默認類型
+
+    return StreamingResponse(io.BytesIO(file_content), media_type=mime_type)
 
 
 @router.put("/{news_id}", response_model=schemas.News)
