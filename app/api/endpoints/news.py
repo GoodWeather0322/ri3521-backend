@@ -1,5 +1,7 @@
 # app/api/endpoints/news.py
+import io
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from app import models
@@ -34,8 +36,8 @@ def read_news(skip: int = 0, limit: int = 10, db: Session = Depends(deps.get_db)
     return news_items
 
 
-@router.get("/{news_id}", response_model=schemas.NewsWithFile)
-def read_news_by_id(news_id: int, db: Session = Depends(deps.get_db)):
+@router.get("/{news_id}/image", response_class=StreamingResponse)
+def get_news_image(news_id: int, db: Session = Depends(deps.get_db)):
     news_item = crud_news.get_news_by_id(db, news_id=news_id)
     if not news_item:
         raise HTTPException(status_code=404, detail="News not found")
@@ -43,14 +45,7 @@ def read_news_by_id(news_id: int, db: Session = Depends(deps.get_db)):
     file_path = news_item.image_path
     with open(file_path, "rb") as file:
         file_content = file.read()
-    return schemas.NewsWithFile(
-        id=news_item.id,
-        title=news_item.title,
-        content=news_item.content,
-        image_path=news_item.image_path,
-        created_at=news_item.created_at,
-        image=file_content,
-    )
+    return StreamingResponse(io.BytesIO(file_content), media_type="image/jpeg")
 
 
 @router.put("/{news_id}", response_model=schemas.News)

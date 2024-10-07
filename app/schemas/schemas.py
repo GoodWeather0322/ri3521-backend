@@ -50,10 +50,6 @@ class News(NewsBase):
         from_attributes = True
 
 
-class NewsWithFile(News):
-    image: bytes
-
-
 class BaseDocument(BaseModel):
     id: int
     file_path: str
