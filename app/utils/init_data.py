@@ -47,6 +47,7 @@ def init_categories():
             {"main_category": "地區活動", "sub_category": "地區年會"},
             {"main_category": "地區活動", "sub_category": "地區活動預告"},
             {"main_category": "眷聯誼會", "sub_category": "眷聯誼會活動"},
+            {"main_category": "相關連結", "sub_category": "相關連結"},
         ]
 
         for category in categories:
@@ -61,12 +62,13 @@ def init_categories():
                     sub_category=category["sub_category"],
                 )
                 crud_category.create_category(db, category=category_in)
-                logger.info(
-                    f"Category {category['main_category']} - {category['sub_category']} created successfully."
-                )
+                # logger.info(
+                #     f"Category {category['main_category']} - {category['sub_category']} created successfully."
+                # )
             else:
-                logger.info(
-                    f"Category {category['main_category']} - {category['sub_category']} already exists."
-                )
+                pass
+                # logger.info(
+                #     f"Category {category['main_category']} - {category['sub_category']} already exists."
+                # )
     finally:
         db.close()
