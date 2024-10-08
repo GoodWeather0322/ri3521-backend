@@ -97,6 +97,10 @@ class PDFDocumentCreate(PDFDocumentBase):
     pass
 
 
+class PDFDocumentUpdate(PDFDocumentBase):
+    pass
+
+
 class PDFDocument(PDFDocumentBase):
     id: int
     upload_time: datetime

@@ -4,7 +4,9 @@ from app.schemas import schemas
 
 
 def create_category(db: Session, category: schemas.CategoryCreate):
-    db_category = Category(**category.dict())
+    db_category = Category(
+        main_category=category.main_category, sub_category=category.sub_category
+    )
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
