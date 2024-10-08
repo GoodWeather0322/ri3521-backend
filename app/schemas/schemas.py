@@ -69,3 +69,38 @@ class DirectorMessage(BaseDocument):
 
 class PresidentAnnouncement(BaseDocument):
     pass
+
+
+class CategoryBase(BaseModel):
+    main_category: str
+    sub_category: str
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class Category(CategoryBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class PDFDocumentBase(BaseModel):
+    title: str
+    link: str
+    category_id: int
+
+
+class PDFDocumentCreate(PDFDocumentBase):
+    pass
+
+
+class PDFDocument(PDFDocumentBase):
+    id: int
+    upload_time: datetime
+    category: Category
+
+    class Config:
+        orm_mode = True

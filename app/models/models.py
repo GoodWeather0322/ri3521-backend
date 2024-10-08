@@ -19,6 +19,7 @@ class User(Base):
     president_announcements = relationship(
         "PresidentAnnouncement", back_populates="owner"
     )
+    pdf_documents = relationship("PDFDocument", back_populates="owner")
 
 
 class News(Base):
@@ -55,3 +56,26 @@ class DirectorMessage(BaseDocument):
 
 class PresidentAnnouncement(BaseDocument):
     __tablename__ = "president_announcements"
+
+
+class Category(Base):
+    __tablename__ = "categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    main_category = Column(String(255), nullable=False)
+    sub_category = Column(String(255), nullable=False)
+
+    pdf_documents = relationship("PDFDocument", back_populates="category")
+
+
+class PDFDocument(Base):
+    __tablename__ = "pdf_documents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    link = Column(String(255), nullable=False)
+    upload_time = Column(DateTime, default=datetime.datetime.utcnow)
+    category_id = Column(Integer, ForeignKey("categories.id"))
+    category = relationship("Category", back_populates="pdf_documents")
+    user_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("User", back_populates="pdf_documents")
