@@ -7,7 +7,7 @@ from app.api import deps
 router = APIRouter()
 
 
-@router.get("/categories", response_model=list[schemas.Category])
+@router.get("/all", response_model=list[schemas.Category])
 def read_categories(
     skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)
 ):
