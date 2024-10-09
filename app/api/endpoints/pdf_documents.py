@@ -27,6 +27,14 @@ async def upload_pdf_document(
     return document
 
 
+@router.get("/all", response_model=list[schemas.PDFDocument])
+def read_documents(
+    skip: int = 0, limit: int = 2000, db: Session = Depends(deps.get_db)
+):
+    documents = crud_pdf_document.get_documents(db, skip=skip, limit=limit)
+    return documents
+
+
 @router.get("/{document_id}", response_model=schemas.PDFDocument)
 def get_pdf_document_by_id(document_id: int, db: Session = Depends(deps.get_db)):
     document = crud_pdf_document.get_document_by_id(db, document_id=document_id)
