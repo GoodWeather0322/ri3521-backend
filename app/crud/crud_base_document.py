@@ -1,5 +1,5 @@
 # app/crud/crud_document.py
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 
 class CRUDBaseDocument:
@@ -16,7 +16,12 @@ class CRUDBaseDocument:
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def get_document_by_id(self, db: Session, document_id: int):
-        return db.query(self.model).filter(self.model.id == document_id).first()
+        return (
+            db.query(self.model)
+            .options(joinedload(self.model.category))
+            .filter(self.model.id == document_id)
+            .first()
+        )
 
     def update_document(self, db: Session, document_id: int, new_file_path: str):
         document = self.get_document_by_id(db, document_id)
