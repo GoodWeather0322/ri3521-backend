@@ -38,10 +38,6 @@ def get_pdf_document_by_id(document_id: int, db: Session = Depends(deps.get_db))
 @router.get("/category/{category_id}", response_model=list[schemas.PDFDocument])
 def get_pdf_documents_by_category(category_id: int, db: Session = Depends(deps.get_db)):
     documents = crud_pdf_document.get_documents_by_category(db, category_id=category_id)
-    if not documents:
-        raise HTTPException(
-            status_code=404, detail="No documents found for this category"
-        )
     return documents
 
 
