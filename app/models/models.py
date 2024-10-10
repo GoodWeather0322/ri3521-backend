@@ -2,6 +2,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, declared_attr
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 import datetime
 
 Base = declarative_base()
@@ -27,7 +28,7 @@ class News(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     image_path = Column(String(255))
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     title = Column(String(255))
     content = Column(Text)
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -39,7 +40,7 @@ class BaseDocument(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     file_path = Column(String(255))
-    uploaded_at = Column(DateTime, default=datetime.datetime.utcnow)
+    uploaded_at = Column(DateTime(timezone=True), server_default=func.now())
 
     @declared_attr
     def user_id(cls):
@@ -74,7 +75,7 @@ class PDFDocument(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
     link = Column(String(255), nullable=False)
-    upload_time = Column(DateTime, default=datetime.datetime.utcnow)
+    upload_time = Column(DateTime(timezone=True), server_default=func.now())
     category_id = Column(Integer, ForeignKey("categories.id"))
     category = relationship("Category", back_populates="pdf_documents")
     user_id = Column(Integer, ForeignKey("users.id"))
